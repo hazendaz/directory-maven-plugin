@@ -23,21 +23,17 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Stack;
 
-import org.apache.maven.plugin.ContextEnabled;
-import org.apache.maven.plugin.Mojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 /**
- * @goal highest-basedir
- *
- * @requiresProject true
- *
- * @phase initialize
- *
- * @threadSafe true
+ * The Class HighestBasedirGoal.
  */
-public class HighestBasedirGoal extends AbstractDirectoryGoal implements Mojo, ContextEnabled {
+@Mojo(name = "highest-basedir", defaultPhase = LifecyclePhase.INITIALIZE, requiresProject = true, threadSafe = true)
+public class HighestBasedirGoal extends AbstractDirectoryGoal {
 
     /**
      * The Class PathComparator.
@@ -54,11 +50,8 @@ public class HighestBasedirGoal extends AbstractDirectoryGoal implements Mojo, C
 
     protected static final String HIGHEST_DIR_CONTEXT_KEY = "directories.highestDir";
 
-    /**
-     * @parameter default-value="${reactorProjects}"
-     *
-     * @readonly
-     */
+    /** The projects. */
+    @Parameter(defaultValue = "${reactorProjects}", readonly = true)
     protected List<MavenProject> projects;
 
     @Override

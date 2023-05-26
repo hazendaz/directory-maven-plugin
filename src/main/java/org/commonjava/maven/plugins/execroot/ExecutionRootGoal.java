@@ -17,20 +17,16 @@ package org.commonjava.maven.plugins.execroot;
 
 import java.io.File;
 
-import org.apache.maven.plugin.ContextEnabled;
-import org.apache.maven.plugin.Mojo;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
 
 /**
- * @goal execution-root
- *
- * @requiresProject true
- *
- * @phase initialize
- *
- * @threadSafe true
+ * The Class ExecutionRootGoal.
  */
-public class ExecutionRootGoal extends AbstractDirectoryGoal implements Mojo, ContextEnabled {
+@Mojo(name = "execution-root", defaultPhase = LifecyclePhase.INITIALIZE, requiresProject = true, threadSafe = true)
+public class ExecutionRootGoal extends AbstractDirectoryGoal {
 
+    /** The Constant EXEC_ROOT_CONTEXT_KEY. */
     protected static final String EXEC_ROOT_CONTEXT_KEY = "directories.execRoot";
 
     @Override

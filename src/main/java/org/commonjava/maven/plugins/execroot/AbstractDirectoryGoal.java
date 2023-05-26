@@ -23,6 +23,7 @@ import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 /**
@@ -30,35 +31,24 @@ import org.apache.maven.project.MavenProject;
  */
 public abstract class AbstractDirectoryGoal extends AbstractMojo {
 
-    /**
-     * @parameter default-value="dirProperty"
-     *
-     * @required
-     */
+    /** The property. */
+    @Parameter(defaultValue = "dirProperty", required = true)
     protected String property;
 
-    /**
-     * @parameter default-value="${project}"
-     *
-     * @readonly
-     */
+    /** The current project. */
+    @Parameter(defaultValue = "${project}", readonly = true)
     protected MavenProject currentProject;
 
-    /**
-     * @parameter default-value="${session}"
-     *
-     * @readonly
-     */
+    /** The session. */
+    @Parameter(defaultValue = "${session}", readonly = true)
     protected MavenSession session;
 
-    /**
-     * @parameter default-value="false"
-     */
+    /** The quiet. */
+    @Parameter(defaultValue = "false")
     protected boolean quiet;
 
-    /**
-     * @parameter default-value="false"
-     */
+    /** The system property. */
+    @Parameter(defaultValue = "false")
     protected boolean systemProperty;
 
     protected AbstractDirectoryGoal() {

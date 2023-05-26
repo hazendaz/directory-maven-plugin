@@ -19,34 +19,27 @@ import java.io.File;
 import java.util.List;
 import java.util.Stack;
 
-import org.apache.maven.plugin.ContextEnabled;
-import org.apache.maven.plugin.Mojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 /**
- * @goal directory-of
- *
- * @requiresProject true
- *
- * @phase initialize
- *
- * @threadSafe true
+ * The Class DirectoryOfGoal.
  */
-public class DirectoryOfGoal extends AbstractDirectoryGoal implements Mojo, ContextEnabled {
+@Mojo(name = "directory-of", defaultPhase = LifecyclePhase.INITIALIZE, requiresProject = true, threadSafe = true)
+public class DirectoryOfGoal extends AbstractDirectoryGoal {
 
+    /** The Constant DIR_OF_CONTEXT_KEY. */
     protected static final String DIR_OF_CONTEXT_KEY = "directories.directoryOf-";
 
-    /**
-     * @parameter
-     */
+    /** The project. */
+    @Parameter
     private ProjectRef project;
 
-    /**
-     * @parameter default-value="${reactorProjects}"
-     *
-     * @readonly
-     */
+    /** The projects. */
+    @Parameter(defaultValue = "${reactorProjects}", readonly = true)
     protected List<MavenProject> projects;
 
     @Override
