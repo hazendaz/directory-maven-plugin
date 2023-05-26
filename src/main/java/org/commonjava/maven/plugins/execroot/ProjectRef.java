@@ -41,9 +41,7 @@ public class ProjectRef {
     }
 
     public void validate() throws MojoExecutionException {
-        if (empty(groupId)) {
-            throw new MojoExecutionException("Project references must contain groupId AND artifactId.");
-        } else if (empty(artifactId)) {
+        if (empty(groupId) || empty(artifactId)) {
             throw new MojoExecutionException("Project references must contain groupId AND artifactId.");
         }
     }
