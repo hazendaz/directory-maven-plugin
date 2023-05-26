@@ -33,8 +33,8 @@
 
     <name>Directory Maven Plugin</name>
     <description>
-        Provides goals to discover various paths based on the projects currently building. For example, 
-        directory of the execution root project, directory of a given project (based on groupId/artifactId), 
+        Provides goals to discover various paths based on the projects currently building. For example,
+        directory of the execution root project, directory of a given project (based on groupId/artifactId),
         and highest project basedir that hasn't been resolved from the repository.
     </description>
     <url>https://github.com/hazendaz/directory-maven-plugin</url>
@@ -144,7 +144,7 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-  
+
     <build>
         <plugins>
             <plugin>
