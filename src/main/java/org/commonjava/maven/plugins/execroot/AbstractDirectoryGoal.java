@@ -16,6 +16,7 @@
 package org.commonjava.maven.plugins.execroot;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -91,10 +92,14 @@ public abstract class AbstractDirectoryGoal extends AbstractMojo {
         }
 
         if (getLog().isDebugEnabled()) {
-            final StringWriter str = new StringWriter();
-            currentProject.getProperties().list(new PrintWriter(str));
+            try (StringWriter str = new StringWriter();
+                    PrintWriter print = new PrintWriter(str)) {
+                currentProject.getProperties().list(print);
 
-            getLog().debug("After setting property '" + property + "', project properties are:\n\n" + str);
+                getLog().debug("After setting property '" + property + "', project properties are:\n\n" + str);
+            } catch (IOException e) {
+                throw new MojoExecutionException("Failed to write properties", e);
+            }
         }
     }
 
