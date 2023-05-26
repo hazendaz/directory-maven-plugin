@@ -15,11 +15,6 @@
  */
 package org.commonjava.maven.plugins.execroot;
 
-import org.apache.maven.plugin.ContextEnabled;
-import org.apache.maven.plugin.Mojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.MavenProject;
-
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -28,26 +23,28 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Stack;
 
+import org.apache.maven.plugin.ContextEnabled;
+import org.apache.maven.plugin.Mojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.project.MavenProject;
+
 /**
  * @goal highest-basedir
+ *
  * @requiresProject true
+ *
  * @phase initialize
+ *
  * @threadSafe true
  */
-public class HighestBasedirGoal
-    extends AbstractDirectoryGoal
-    implements Mojo, ContextEnabled
-{
+public class HighestBasedirGoal extends AbstractDirectoryGoal implements Mojo, ContextEnabled {
 
-    public static final class PathComparator
-        implements Comparator<File>
-    {
-        public int compare( final File first, final File second )
-        {
+    public static final class PathComparator implements Comparator<File> {
+        public int compare(final File first, final File second) {
             if (System.getProperty("os.name").startsWith("Windows")) {
-                return first.getAbsolutePath().compareToIgnoreCase( second.getAbsolutePath() );
+                return first.getAbsolutePath().compareToIgnoreCase(second.getAbsolutePath());
             } else {
-                return first.getAbsolutePath().compareTo( second.getAbsolutePath() );
+                return first.getAbsolutePath().compareTo(second.getAbsolutePath());
             }
         }
     }
@@ -56,74 +53,68 @@ public class HighestBasedirGoal
 
     /**
      * @parameter default-value="${reactorProjects}"
+     *
      * @readonly
      */
     protected List<MavenProject> projects;
 
     /**
      * {@inheritDoc}
+     *
      * @throws MojoExecutionException
+     *
      * @see org.commonjava.maven.plugins.execroot.AbstractDirectoryGoal#findDirectory()
      */
     @Override
-    protected File findDirectory()
-        throws MojoExecutionException
-    {
+    protected File findDirectory() throws MojoExecutionException {
         final Stack<MavenProject> toCheck = new Stack<MavenProject>();
-        toCheck.addAll( projects );
+        toCheck.addAll(projects);
 
         // exclude projects loaded directly from the local repository (super-pom's etc)
         String localRepoBaseDir = session.getLocalRepository().getBasedir();
 
         final List<File> files = new ArrayList<File>();
-        while ( !toCheck.isEmpty() )
-        {
+        while (!toCheck.isEmpty()) {
             final MavenProject p = toCheck.pop();
-            if ( (p.getBasedir() == null || (p.getBasedir().toString().startsWith(localRepoBaseDir))) )
-            {
+            if ((p.getBasedir() == null || (p.getBasedir().toString().startsWith(localRepoBaseDir)))) {
                 // we've hit a parent that was resolved. Don't bother going higher up the hierarchy.
                 continue;
             }
 
             File file = new File(Paths.get(p.getBasedir().toURI()).normalize().toString());
 
-            if ( !files.contains( file ) )
-            {
+            if (!files.contains(file)) {
                 // add to zero to maybe help pre-sort the paths...the shortest (parent) paths should end up near the
                 // top.
-                files.add( 0, file );
+                files.add(0, file);
             }
 
-            if ( p.getParent() != null )
-            {
-                toCheck.add( p.getParent() );
+            if (p.getParent() != null) {
+                toCheck.add(p.getParent());
             }
         }
 
-        if ( files.isEmpty() )
-        {
-            throw new MojoExecutionException( "No project base directories found! Are you sure you're "
-                + "executing this on a valid Maven project?" );
+        if (files.isEmpty()) {
+            throw new MojoExecutionException("No project base directories found! Are you sure you're "
+                    + "executing this on a valid Maven project?");
         }
 
-        Collections.sort( files, new PathComparator() );
-        final File dir = files.get( 0 );
+        Collections.sort(files, new PathComparator());
+        final File dir = files.get(0);
 
-        if ( files.size() > 1 )
-        {
-            final File next = files.get( 1 );
+        if (files.size() > 1) {
+            final File next = files.get(1);
             String dirPath = dir.getAbsolutePath();
             String nextPath = next.getAbsolutePath();
             if (System.getProperty("os.name").startsWith("Windows")) {
                 dirPath = dirPath.toLowerCase();
                 nextPath = nextPath.toLowerCase();
             }
-            if ( !nextPath.startsWith( dirPath ) )
-            {
+            if (!nextPath.startsWith(dirPath)) {
                 getLog().error("Candidate 1: " + dirPath);
                 getLog().error("Candidate 2: " + nextPath);
-                throw new MojoExecutionException( "Cannot find a single highest directory for this project set. "
-                    + "First two candidates directories don't share a common root." );
+                throw new MojoExecutionException("Cannot find a single highest directory for this project set. "
+                        + "First two candidates directories don't share a common root.");
             }
         }
 
@@ -132,21 +123,21 @@ public class HighestBasedirGoal
 
     /**
      * {@inheritDoc}
+     *
      * @see org.commonjava.maven.plugins.execroot.AbstractDirectoryGoal#getContextKey()
      */
     @Override
-    protected String getContextKey()
-    {
+    protected String getContextKey() {
         return HIGHEST_DIR_CONTEXT_KEY;
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see org.commonjava.maven.plugins.execroot.AbstractDirectoryGoal#getLogLabel()
      */
     @Override
-    protected String getLogLabel()
-    {
+    protected String getLogLabel() {
         return "Highest basedir";
     }
 

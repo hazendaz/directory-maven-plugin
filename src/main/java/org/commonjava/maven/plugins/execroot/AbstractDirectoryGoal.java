@@ -15,34 +15,35 @@
  */
 package org.commonjava.maven.plugins.execroot;
 
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
-import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
-public abstract class AbstractDirectoryGoal
-    extends AbstractMojo
-{
+public abstract class AbstractDirectoryGoal extends AbstractMojo {
 
     /**
      * @parameter default-value="dirProperty"
+     *
      * @required
      */
     protected String property;
 
     /**
      * @parameter default-value="${project}"
+     *
      * @readonly
      */
     protected MavenProject currentProject;
 
     /**
      * @parameter default-value="${session}"
+     *
      * @readonly
      */
     protected MavenSession session;
@@ -57,36 +58,30 @@ public abstract class AbstractDirectoryGoal
      */
     protected boolean systemProperty;
 
-    protected AbstractDirectoryGoal()
-    {
+    protected AbstractDirectoryGoal() {
     }
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see org.apache.maven.plugin.Mojo#execute()
      */
-    public final void execute()
-        throws MojoExecutionException, MojoFailureException
-    {
+    public final void execute() throws MojoExecutionException, MojoFailureException {
         File execRoot;
-        synchronized ( session )
-        {
+        synchronized (session) {
             final String key = getContextKey();
-            execRoot = (File) getPluginContext().get( key );
-            if ( execRoot == null )
-            {
+            execRoot = (File) getPluginContext().get(key);
+            if (execRoot == null) {
                 execRoot = findDirectory();
-                getPluginContext().put( key, execRoot );
+                getPluginContext().put(key, execRoot);
             }
         }
 
-        if ( !quiet )
-        {
-            getLog().info( getLogLabel() + " set to: " + execRoot );
+        if (!quiet) {
+            getLog().info(getLogLabel() + " set to: " + execRoot);
         }
 
-        currentProject.getProperties().setProperty( property, execRoot.getAbsolutePath() );
+        currentProject.getProperties().setProperty(property, execRoot.getAbsolutePath());
 
         if (systemProperty) {
             String existingValue = System.getProperty(property);
@@ -95,19 +90,17 @@ public abstract class AbstractDirectoryGoal
             }
         }
 
-        if ( getLog().isDebugEnabled() )
-        {
+        if (getLog().isDebugEnabled()) {
             final StringWriter str = new StringWriter();
-            currentProject.getProperties().list( new PrintWriter( str ) );
+            currentProject.getProperties().list(new PrintWriter(str));
 
-            getLog().debug( "After setting property '" + property + "', project properties are:\n\n" + str );
+            getLog().debug("After setting property '" + property + "', project properties are:\n\n" + str);
         }
     }
 
     protected abstract String getLogLabel();
 
-    protected abstract File findDirectory()
-        throws MojoExecutionException;
+    protected abstract File findDirectory() throws MojoExecutionException;
 
     protected abstract String getContextKey();
 

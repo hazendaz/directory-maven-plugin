@@ -15,51 +15,51 @@
  */
 package org.commonjava.maven.plugins.execroot;
 
+import java.io.File;
+
 import org.apache.maven.plugin.ContextEnabled;
 import org.apache.maven.plugin.Mojo;
 
-import java.io.File;
-
 /**
  * @goal execution-root
- * @requiresProject true 
+ *
+ * @requiresProject true
+ *
  * @phase initialize
+ *
  * @threadSafe true
  */
-public class ExecutionRootGoal
-    extends AbstractDirectoryGoal
-    implements Mojo, ContextEnabled
-{
+public class ExecutionRootGoal extends AbstractDirectoryGoal implements Mojo, ContextEnabled {
 
     protected static final String EXEC_ROOT_CONTEXT_KEY = "directories.execRoot";
 
     /**
      * {@inheritDoc}
+     *
      * @see org.commonjava.maven.plugins.execroot.AbstractDirectoryGoal#findDirectory()
      */
     @Override
-    protected File findDirectory()
-    {
-        return new File( session.getExecutionRootDirectory() );
+    protected File findDirectory() {
+        return new File(session.getExecutionRootDirectory());
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see org.commonjava.maven.plugins.execroot.AbstractDirectoryGoal#getContextKey()
      */
     @Override
-    protected String getContextKey()
-    {
+    protected String getContextKey() {
         return EXEC_ROOT_CONTEXT_KEY;
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see org.commonjava.maven.plugins.execroot.AbstractDirectoryGoal#getLogLabel()
      */
     @Override
-    protected String getLogLabel()
-    {
+    protected String getLogLabel() {
         return "Execution-Root";
     }
 

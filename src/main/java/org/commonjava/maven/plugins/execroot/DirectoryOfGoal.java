@@ -15,25 +15,25 @@
  */
 package org.commonjava.maven.plugins.execroot;
 
+import java.io.File;
+import java.util.List;
+import java.util.Stack;
+
 import org.apache.maven.plugin.ContextEnabled;
 import org.apache.maven.plugin.Mojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
-import java.io.File;
-import java.util.List;
-import java.util.Stack;
-
 /**
  * @goal directory-of
- * @requiresProject true 
+ *
+ * @requiresProject true
+ *
  * @phase initialize
+ *
  * @threadSafe true
  */
-public class DirectoryOfGoal
-    extends AbstractDirectoryGoal
-    implements Mojo, ContextEnabled
-{
+public class DirectoryOfGoal extends AbstractDirectoryGoal implements Mojo, ContextEnabled {
 
     protected static final String DIR_OF_CONTEXT_KEY = "directories.directoryOf-";
 
@@ -44,42 +44,39 @@ public class DirectoryOfGoal
 
     /**
      * @parameter default-value="${reactorProjects}"
+     *
      * @readonly
      */
     protected List<MavenProject> projects;
 
     /**
      * {@inheritDoc}
-     * @throws MojoExecutionException 
+     *
+     * @throws MojoExecutionException
+     *
      * @see org.commonjava.maven.plugins.execroot.AbstractDirectoryGoal#findDirectory()
      */
     @Override
-    protected File findDirectory()
-        throws MojoExecutionException
-    {
+    protected File findDirectory() throws MojoExecutionException {
         File dir = null;
 
         final Stack<MavenProject> toCheck = new Stack<MavenProject>();
-        toCheck.addAll( projects );
+        toCheck.addAll(projects);
 
-        while ( !toCheck.isEmpty() )
-        {
+        while (!toCheck.isEmpty()) {
             final MavenProject p = toCheck.pop();
-            if ( project.matches( p ) )
-            {
+            if (project.matches(p)) {
                 dir = p.getBasedir();
                 break;
             }
 
-            if ( p.getParent() != null )
-            {
-                toCheck.add( p.getParent() );
+            if (p.getParent() != null) {
+                toCheck.add(p.getParent());
             }
         }
 
-        if ( dir == null )
-        {
-            throw new MojoExecutionException( "Cannot find directory for project: " + project );
+        if (dir == null) {
+            throw new MojoExecutionException("Cannot find directory for project: " + project);
         }
 
         return dir;
@@ -87,21 +84,21 @@ public class DirectoryOfGoal
 
     /**
      * {@inheritDoc}
+     *
      * @see org.commonjava.maven.plugins.execroot.AbstractDirectoryGoal#getContextKey()
      */
     @Override
-    protected String getContextKey()
-    {
+    protected String getContextKey() {
         return DIR_OF_CONTEXT_KEY + project;
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see org.commonjava.maven.plugins.execroot.AbstractDirectoryGoal#getLogLabel()
      */
     @Override
-    protected String getLogLabel()
-    {
+    protected String getLogLabel() {
         return "Directory of " + project;
     }
 
