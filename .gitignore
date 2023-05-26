@@ -1,1 +1,8 @@
 target/
+.classpath
+.factorypath
+.project
+.settings
+.mvn/wrapper/maven-wrapper.jar
+*.releaseBackup
+release.properties
