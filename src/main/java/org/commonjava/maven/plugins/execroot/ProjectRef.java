@@ -18,38 +18,87 @@ package org.commonjava.maven.plugins.execroot;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
+/**
+ * The Class ProjectRef.
+ */
 public class ProjectRef {
 
+    /** The group id. */
     private String groupId;
 
+    /** The artifact id. */
     private String artifactId;
 
+    /**
+     * Gets the group id.
+     *
+     * @return the group id
+     */
     public String getGroupId() {
         return groupId;
     }
 
+    /**
+     * Sets the group id.
+     *
+     * @param groupId
+     *            the new group id
+     */
     public void setGroupId(final String groupId) {
         this.groupId = groupId;
     }
 
+    /**
+     * Gets the artifact id.
+     *
+     * @return the artifact id
+     */
     public String getArtifactId() {
         return artifactId;
     }
 
+    /**
+     * Sets the artifact id.
+     *
+     * @param artifactId
+     *            the new artifact id
+     */
     public void setArtifactId(final String artifactId) {
         this.artifactId = artifactId;
     }
 
+    /**
+     * Validate.
+     *
+     * @throws MojoExecutionException
+     *             the mojo execution exception
+     */
     public void validate() throws MojoExecutionException {
         if (empty(groupId) || empty(artifactId)) {
             throw new MojoExecutionException("Project references must contain groupId AND artifactId.");
         }
     }
 
+    /**
+     * Empty.
+     *
+     * @param str
+     *            the str
+     *
+     * @return true, if successful
+     */
     private boolean empty(final String str) {
         return str == null || str.trim().length() == 0;
     }
 
+    /**
+     * Matches.
+     *
+     * @param project
+     *            the project
+     *
+     * @return true, if successful
+     */
     public boolean matches(final MavenProject project) {
         return project.getGroupId().equals(groupId) && project.getArtifactId().equals(artifactId);
     }

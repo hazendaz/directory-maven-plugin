@@ -39,6 +39,9 @@ import org.apache.maven.project.MavenProject;
  */
 public class HighestBasedirGoal extends AbstractDirectoryGoal implements Mojo, ContextEnabled {
 
+    /**
+     * The Class PathComparator.
+     */
     public static final class PathComparator implements Comparator<File> {
         public int compare(final File first, final File second) {
             if (System.getProperty("os.name").startsWith("Windows")) {

@@ -25,6 +25,9 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
+/**
+ * The Class AbstractDirectoryGoal.
+ */
 public abstract class AbstractDirectoryGoal extends AbstractMojo {
 
     /**
@@ -98,10 +101,28 @@ public abstract class AbstractDirectoryGoal extends AbstractMojo {
         }
     }
 
+    /**
+     * Gets the log label.
+     *
+     * @return the log label
+     */
     protected abstract String getLogLabel();
 
+    /**
+     * Find directory.
+     *
+     * @return the file
+     *
+     * @throws MojoExecutionException
+     *             the mojo execution exception
+     */
     protected abstract File findDirectory() throws MojoExecutionException;
 
+    /**
+     * Gets the context key.
+     *
+     * @return the context key
+     */
     protected abstract String getContextKey();
 
 }
