@@ -21,7 +21,7 @@ name: Sonatype
 on:
   push:
     branches:
-      - master
+      - modernize
 
 jobs:
   build:
