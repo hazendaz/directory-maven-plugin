@@ -16,8 +16,9 @@
 package org.commonjava.maven.plugins.execroot;
 
 import java.io.File;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
-import java.util.Stack;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -46,9 +47,7 @@ public class DirectoryOfGoal extends AbstractDirectoryGoal {
     protected File findDirectory() throws MojoExecutionException {
         File dir = null;
 
-        final Stack<MavenProject> toCheck = new Stack<MavenProject>();
-        toCheck.addAll(projects);
-
+        final Deque<MavenProject> toCheck = new ArrayDeque<>(projects);
         while (!toCheck.isEmpty()) {
             final MavenProject p = toCheck.pop();
             if (project.matches(p)) {

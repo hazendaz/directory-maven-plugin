@@ -51,9 +51,6 @@ public abstract class AbstractDirectoryGoal extends AbstractMojo {
     @Parameter(defaultValue = "false")
     protected boolean systemProperty;
 
-    protected AbstractDirectoryGoal() {
-    }
-
     /**
      * Skip run of plugin.
      * 

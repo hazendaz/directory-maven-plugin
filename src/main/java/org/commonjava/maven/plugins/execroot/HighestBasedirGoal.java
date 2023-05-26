@@ -17,11 +17,12 @@ package org.commonjava.maven.plugins.execroot;
 
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Deque;
 import java.util.List;
-import java.util.Stack;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -39,15 +40,16 @@ public class HighestBasedirGoal extends AbstractDirectoryGoal {
      * The Class PathComparator.
      */
     public static final class PathComparator implements Comparator<File> {
+        @Override
         public int compare(final File first, final File second) {
             if (System.getProperty("os.name").startsWith("Windows")) {
                 return first.getAbsolutePath().compareToIgnoreCase(second.getAbsolutePath());
-            } else {
-                return first.getAbsolutePath().compareTo(second.getAbsolutePath());
             }
+            return first.getAbsolutePath().compareTo(second.getAbsolutePath());
         }
     }
 
+    /** The Constant HIGHEST_DIR_CONTEXT_KEY. */
     protected static final String HIGHEST_DIR_CONTEXT_KEY = "directories.highestDir";
 
     /** The projects. */
@@ -56,16 +58,14 @@ public class HighestBasedirGoal extends AbstractDirectoryGoal {
 
     @Override
     protected File findDirectory() throws MojoExecutionException {
-        final Stack<MavenProject> toCheck = new Stack<MavenProject>();
-        toCheck.addAll(projects);
-
+        final Deque<MavenProject> toCheck = new ArrayDeque<>(projects);
         // exclude projects loaded directly from the local repository (super-pom's etc)
         String localRepoBaseDir = session.getLocalRepository().getBasedir();
 
-        final List<File> files = new ArrayList<File>();
+        final List<File> files = new ArrayList<>();
         while (!toCheck.isEmpty()) {
             final MavenProject p = toCheck.pop();
-            if ((p.getBasedir() == null || (p.getBasedir().toString().startsWith(localRepoBaseDir)))) {
+            if (p.getBasedir() == null || p.getBasedir().toString().startsWith(localRepoBaseDir)) {
                 // we've hit a parent that was resolved. Don't bother going higher up the hierarchy.
                 continue;
             }
