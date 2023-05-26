@@ -54,7 +54,7 @@ public abstract class AbstractDirectoryGoal extends AbstractMojo {
 
     /**
      * Skip run of plugin.
-     * 
+     *
      * @since 1.1.0
      */
     @Parameter(defaultValue = "false", property = "directory.skip")
@@ -92,8 +92,7 @@ public abstract class AbstractDirectoryGoal extends AbstractMojo {
         }
 
         if (getLog().isDebugEnabled()) {
-            try (StringWriter str = new StringWriter();
-                    PrintWriter print = new PrintWriter(str)) {
+            try (StringWriter str = new StringWriter(); PrintWriter print = new PrintWriter(str)) {
                 currentProject.getProperties().list(print);
 
                 getLog().debug("After setting property '" + property + "', project properties are:\n\n" + str);
