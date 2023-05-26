@@ -65,11 +65,21 @@ public abstract class AbstractDirectoryGoal extends AbstractMojo {
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * @see org.apache.maven.plugin.Mojo#execute()
+     * Skip run of plugin.
+     * 
+     * @since 1.1.0
      */
+    @Parameter(defaultValue = "false", property = "directory.skip")
+    private boolean skip;
+
+    @Override
     public final void execute() throws MojoExecutionException, MojoFailureException {
+        // Check if plugin run should be skipped
+        if (this.skip) {
+            getLog().info("Directory Plugin is skipped");
+            return;
+        }
+
         File execRoot;
         synchronized (session) {
             final String key = getContextKey();
