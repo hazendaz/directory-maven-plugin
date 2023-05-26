@@ -28,9 +28,9 @@ The basic plugin declaration looks like the following:
 <build>
   <plugins>
     <plugin>
-      <groupId>org.commonjava.maven.plugins</groupId>
+      <groupId>com.github.hazendaz.maven</groupId>
       <artifactId>directory-maven-plugin</artifactId>
-      <version>0.1</version>
+      <version>1.1.0-SNAPSHOT</version>
       <executions>
         <execution>
           <id>directories</id>
@@ -45,8 +45,9 @@ The basic plugin declaration looks like the following:
       </executions>
     </plugin>
     <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-antrun-plugin</artifactId>
-      <version>1.7</version>
+      <version>3.1.0</version>
       <executions>
         <execution>
           <id>echo</id>
