@@ -49,13 +49,6 @@ public class DirectoryOfGoal extends AbstractDirectoryGoal implements Mojo, Cont
      */
     protected List<MavenProject> projects;
 
-    /**
-     * {@inheritDoc}
-     *
-     * @throws MojoExecutionException
-     *
-     * @see org.commonjava.maven.plugins.execroot.AbstractDirectoryGoal#findDirectory()
-     */
     @Override
     protected File findDirectory() throws MojoExecutionException {
         File dir = null;
@@ -82,21 +75,11 @@ public class DirectoryOfGoal extends AbstractDirectoryGoal implements Mojo, Cont
         return dir;
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @see org.commonjava.maven.plugins.execroot.AbstractDirectoryGoal#getContextKey()
-     */
     @Override
     protected String getContextKey() {
         return DIR_OF_CONTEXT_KEY + project;
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @see org.commonjava.maven.plugins.execroot.AbstractDirectoryGoal#getLogLabel()
-     */
     @Override
     protected String getLogLabel() {
         return "Directory of " + project;

@@ -58,13 +58,6 @@ public class HighestBasedirGoal extends AbstractDirectoryGoal implements Mojo, C
      */
     protected List<MavenProject> projects;
 
-    /**
-     * {@inheritDoc}
-     *
-     * @throws MojoExecutionException
-     *
-     * @see org.commonjava.maven.plugins.execroot.AbstractDirectoryGoal#findDirectory()
-     */
     @Override
     protected File findDirectory() throws MojoExecutionException {
         final Stack<MavenProject> toCheck = new Stack<MavenProject>();
@@ -121,21 +114,11 @@ public class HighestBasedirGoal extends AbstractDirectoryGoal implements Mojo, C
         return dir;
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @see org.commonjava.maven.plugins.execroot.AbstractDirectoryGoal#getContextKey()
-     */
     @Override
     protected String getContextKey() {
         return HIGHEST_DIR_CONTEXT_KEY;
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @see org.commonjava.maven.plugins.execroot.AbstractDirectoryGoal#getLogLabel()
-     */
     @Override
     protected String getLogLabel() {
         return "Highest basedir";

@@ -33,31 +33,16 @@ public class ExecutionRootGoal extends AbstractDirectoryGoal implements Mojo, Co
 
     protected static final String EXEC_ROOT_CONTEXT_KEY = "directories.execRoot";
 
-    /**
-     * {@inheritDoc}
-     *
-     * @see org.commonjava.maven.plugins.execroot.AbstractDirectoryGoal#findDirectory()
-     */
     @Override
     protected File findDirectory() {
         return new File(session.getExecutionRootDirectory());
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @see org.commonjava.maven.plugins.execroot.AbstractDirectoryGoal#getContextKey()
-     */
     @Override
     protected String getContextKey() {
         return EXEC_ROOT_CONTEXT_KEY;
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @see org.commonjava.maven.plugins.execroot.AbstractDirectoryGoal#getLogLabel()
-     */
     @Override
     protected String getLogLabel() {
         return "Execution-Root";
