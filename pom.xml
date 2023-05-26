@@ -16,123 +16,167 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>9</version>
-  </parent>
-  
-  <groupId>org.commonjava.maven.plugins</groupId>
-  <artifactId>directory-maven-plugin</artifactId>
-  <version>1.1.0-SNAPSHOT</version>
-  <packaging>maven-plugin</packaging>
+    <modelVersion>4.0.0</modelVersion>
 
-  <name>Directory Maven Plugin</name>
-  <description>
-    Provides goals to discover various paths based on the projects currently building. For example, 
-    directory of the execution root project, directory of a given project (based on groupId/artifactId), 
-    and highest project basedir that hasn't been resolved from the repository.
-  </description>
+    <parent>
+        <groupId>com.github.hazendaz</groupId>
+        <artifactId>base-parent</artifactId>
+        <version>39</version>
+        <relativePath />
+    </parent>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+    <groupId>com.github.hazendaz.maven</groupId>
+    <artifactId>directory-maven-plugin</artifactId>
+    <version>1.1.0-SNAPSHOT</version>
+    <packaging>maven-plugin</packaging>
 
-  <scm>
-    <connection>scm:git:http://github.com/jdcasey/directory-maven-plugin.git</connection>
-    <developerConnection>scm:git:git@github.com:jdcasey/directory-maven-plugin.git</developerConnection>
-    <url>http://github.com/jdcasey/directory-maven-plugin</url>
-  </scm>
-  
-  <dependencyManagement>
+    <name>Directory Maven Plugin</name>
+    <description>
+        Provides goals to discover various paths based on the projects currently building. For example, 
+        directory of the execution root project, directory of a given project (based on groupId/artifactId), 
+        and highest project basedir that hasn't been resolved from the repository.
+    </description>
+    <url>https://github.com/hazendaz/directory-maven-plugin</url>
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+            <comments>htmlcompressor is distributed under Apache License 2.0</comments>
+        </license>
+    </licenses>
+
+    <prerequisites>
+        <maven>3.2.5</maven>
+    </prerequisites>
+
+    <scm>
+        <connection>scm:git:ssh://github.com/hazendaz/directory-maven-plugin.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/hazendaz/directory-maven-plugin.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://github.com/hazendaz/directory-maven-plugin</url>
+    </scm>
+    <issueManagement>
+        <system>Github</system>
+        <url>https://github.com/hazendaz/directory-maven-plugin/issues</url>
+    </issueManagement>
+    <ciManagement>
+        <system>Github</system>
+        <url>https://github.com/hazendaz/directory-maven-plugin/actions</url>
+    </ciManagement>
+    <distributionManagement>
+        <site>
+            <id>gh-pages-scm</id>
+            <name>GitHub Pages</name>
+            <url>scm:git:ssh://git@github.com/hazendaz/directory-maven-plugin.git</url>
+        </site>
+    </distributionManagement>
+
+    <properties>
+        <!-- Checkstyle -->
+        <checkstyle.config>checkstyle-4space.xml</checkstyle.config>
+
+        <!-- Automatic Module Name -->
+        <module.name>com.github.hazendaz.maven.directory</module.name>
+
+        <!-- Reproducible Builds -->
+        <project.build.outputTimestamp>1757561022</project.build.outputTimestamp>
+
+        <!-- Maven Artifacts -->
+        <maven.version>3.9.2</maven.version>
+        <maven-plugin.version>3.9.0</maven-plugin.version>
+
+        <!-- Junit -->
+        <junit.version>5.9.3</junit.version>
+
+        <!-- Targeted patches -->
+        <io.version>2.12.0</io.version>
+        <lang3.version>3.12.0</lang3.version>
+        <slf4j.version>2.0.7</slf4j.version>
+    </properties>
+
     <dependencies>
-      <dependency>
-        <groupId>org.apache.maven</groupId>
-        <artifactId>maven</artifactId>
-        <version>3.9.0</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-core</artifactId>
+            <version>${maven.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-plugin-api</artifactId>
+            <version>${maven.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugin-tools</groupId>
+            <artifactId>maven-plugin-annotations</artifactId>
+            <version>${maven-plugin.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Junit -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Targeted patches -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${io.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${lang3.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
-  </dependencyManagement>
   
-  <prerequisites>
-    <maven>[3.0,]</maven>
-  </prerequisites>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-plugin-plugin</artifactId>
+                <version>${maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>default-descriptor</id>
+                        <goals>
+                            <goal>descriptor</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>help-goal</id>
+                        <goals>
+                            <goal>helpmojo</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-core</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-plugin-api</artifactId>
-      <version>3.9.0</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-model</artifactId>
-      <version>3.9.0</version>
-      <scope>provided</scope>
-    </dependency>
-  </dependencies>
-  
-  <build>
-    <pluginManagement>
-      <plugins>
-        <!-- Overriding obsolete oss-parent -->
-        <plugin>
-          <artifactId>maven-enforcer-plugin</artifactId>
-          <version>3.3.0</version>
-        </plugin>
-        <!-- Overriding obsolete oss-parent -->
-        <plugin>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>3.3.1</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.11.0</version>
-          <configuration>
-            <source>1.7</source>
-            <target>1.7</target>
-          </configuration>
-        </plugin>
-        <plugin>
-          <artifactId>maven-plugin-plugin</artifactId>
-          <version>3.9.0</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.5.0</version>
-          <configuration>
-            <detectOfflineLinks>false</detectOfflineLinks>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-plugin-report-plugin</artifactId>
+                <version>${maven-plugin.version}</version>
+            </plugin>
+        </plugins>
+    </reporting>
 
-            <additionalparam>-Xdoclint:none</additionalparam>
-            <additionalOptions>-Xdoclint:none</additionalOptions>
-            <additionalJOption>-Xdoclint:none</additionalJOption>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-    <plugins>
-        <!-- Overriding obsolete oss-parent -->
-        <plugin>
-          <artifactId>maven-enforcer-plugin</artifactId>
-          <version>3.3.0</version>
-        </plugin>
-    </plugins>
-  </build>
 </project>
