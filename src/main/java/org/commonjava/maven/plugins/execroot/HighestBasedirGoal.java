@@ -61,7 +61,7 @@ public class HighestBasedirGoal extends AbstractDirectoryGoal {
     protected File findDirectory() throws MojoExecutionException {
         final Deque<MavenProject> toCheck = new ArrayDeque<>(projects);
         // exclude projects loaded directly from the local repository (super-pom's etc)
-        String localRepoBaseDir = session.getLocalRepository().getBasedir();
+        String localRepoBaseDir = session.getRepositorySession().getLocalRepository().getBasedir().getAbsolutePath();
 
         final List<File> files = new ArrayList<>();
         while (!toCheck.isEmpty()) {
