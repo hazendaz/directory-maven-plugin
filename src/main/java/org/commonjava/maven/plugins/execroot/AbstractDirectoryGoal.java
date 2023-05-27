@@ -52,6 +52,9 @@ public abstract class AbstractDirectoryGoal extends AbstractMojo {
     @Parameter(defaultValue = "false")
     protected boolean systemProperty;
 
+    /** The lock obj. */
+    private final Object lockObj = new Object();
+
     /**
      * Skip run of plugin.
      *
@@ -69,7 +72,7 @@ public abstract class AbstractDirectoryGoal extends AbstractMojo {
         }
 
         File execRoot;
-        synchronized (session) {
+        synchronized (lockObj) {
             final String key = getContextKey();
             execRoot = (File) getPluginContext().get(key);
             if (execRoot == null) {
