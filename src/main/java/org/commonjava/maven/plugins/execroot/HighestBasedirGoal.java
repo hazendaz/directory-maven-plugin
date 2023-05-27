@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -96,8 +97,8 @@ public class HighestBasedirGoal extends AbstractDirectoryGoal {
             String dirPath = dir.getAbsolutePath();
             String nextPath = next.getAbsolutePath();
             if (System.getProperty("os.name").startsWith("Windows")) {
-                dirPath = dirPath.toLowerCase();
-                nextPath = nextPath.toLowerCase();
+                dirPath = dirPath.toLowerCase(Locale.ENGLISH);
+                nextPath = nextPath.toLowerCase(Locale.ENGLISH);
             }
             if (!nextPath.startsWith(dirPath)) {
                 getLog().error("Candidate 1: " + dirPath);
