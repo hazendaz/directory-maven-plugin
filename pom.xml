@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
        Copyright 2011-2023 the original author or authors.
@@ -31,12 +32,10 @@
     <version>1.1.1-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
-    <description>
-        Provides goals to discover various paths based on the projects currently building. For example,
     <name>directory-maven-plugin</name>
+    <description>Provides goals to discover various paths based on the projects currently building. For example,
         directory of the execution root project, directory of a given project (based on groupId/artifactId),
-        and highest project basedir that hasn't been resolved from the repository.
-    </description>
+        and highest project basedir that hasn't been resolved from the repository.</description>
     <url>https://github.com/hazendaz/directory-maven-plugin</url>
     <licenses>
         <license>
