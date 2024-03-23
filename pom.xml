@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-       Copyright 2011-2023 the original author or authors.
+       Copyright 2011-2024 the original author or authors.
 
        Licensed under the Apache License, Version 2.0 (the "License");
        you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@
 
     <groupId>com.github.hazendaz.maven</groupId>
     <artifactId>directory-maven-plugin</artifactId>
-    <version>1.1.2-SNAPSHOT</version>
+    <version>1.1.2</version>
     <packaging>maven-plugin</packaging>
 
     <name>directory-maven-plugin</name>
@@ -53,7 +53,7 @@
     <scm>
         <connection>scm:git:ssh://github.com/hazendaz/directory-maven-plugin.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/hazendaz/directory-maven-plugin.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>directory-maven-plugin-1.1.2</tag>
         <url>https://github.com/hazendaz/directory-maven-plugin</url>
     </scm>
     <issueManagement>
@@ -80,7 +80,7 @@
         <module.name>com.github.hazendaz.maven.directory</module.name>
 
         <!-- Reproducible Builds -->
-        <project.build.outputTimestamp>1697408464</project.build.outputTimestamp>
+        <project.build.outputTimestamp>1711236674</project.build.outputTimestamp>
 
         <!-- Maven Artifacts -->
         <maven.version>3.9.6</maven.version>
