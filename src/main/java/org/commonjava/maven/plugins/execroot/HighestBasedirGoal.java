@@ -1,5 +1,5 @@
 /*
- *    Copyright 2011-2023 the original author or authors.
+ *    Copyright 2011-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -65,22 +65,22 @@ public class HighestBasedirGoal extends AbstractDirectoryGoal {
 
         final List<File> files = new ArrayList<>();
         while (!toCheck.isEmpty()) {
-            final MavenProject p = toCheck.pop();
-            if (p.getBasedir() == null || p.getBasedir().toString().startsWith(localRepoBaseDir)) {
+            final MavenProject mavenProject = toCheck.pop();
+            if (mavenProject.getBasedir() == null
+                    || mavenProject.getBasedir().toString().startsWith(localRepoBaseDir)) {
                 // we've hit a parent that was resolved. Don't bother going higher up the hierarchy.
                 continue;
             }
 
-            File file = new File(Paths.get(p.getBasedir().toURI()).normalize().toString());
+            File file = new File(Paths.get(mavenProject.getBasedir().toURI()).normalize().toString());
 
             if (!files.contains(file)) {
-                // add to zero to maybe help pre-sort the paths...the shortest (parent) paths should end up near the
-                // top.
+                // add to zero to pre-sort the paths...the shortest (parent) paths should end up near the top.
                 files.add(0, file);
             }
 
-            if (p.getParent() != null) {
-                toCheck.add(p.getParent());
+            if (mavenProject.getParent() != null) {
+                toCheck.add(mavenProject.getParent());
             }
         }
 
@@ -104,7 +104,8 @@ public class HighestBasedirGoal extends AbstractDirectoryGoal {
                 getLog().error("Candidate 1: " + dirPath);
                 getLog().error("Candidate 2: " + nextPath);
                 throw new MojoExecutionException("Cannot find a single highest directory for this project set. "
-                        + "First two candidates directories don't share a common root.");
+                        + "First two candidates directories don't share a common root." + " Candidate 1: " + dirPath
+                        + " Candidate 2: " + nextPath);
             }
         }
 

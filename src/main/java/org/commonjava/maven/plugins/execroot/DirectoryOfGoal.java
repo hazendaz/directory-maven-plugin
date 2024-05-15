@@ -1,5 +1,5 @@
 /*
- *    Copyright 2011-2023 the original author or authors.
+ *    Copyright 2011-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -49,14 +49,14 @@ public class DirectoryOfGoal extends AbstractDirectoryGoal {
 
         final Deque<MavenProject> toCheck = new ArrayDeque<>(projects);
         while (!toCheck.isEmpty()) {
-            final MavenProject p = toCheck.pop();
-            if (project.matches(p)) {
-                dir = p.getBasedir();
+            final MavenProject mavenProject = toCheck.pop();
+            if (project.matches(mavenProject)) {
+                dir = mavenProject.getBasedir();
                 break;
             }
 
-            if (p.getParent() != null) {
-                toCheck.add(p.getParent());
+            if (mavenProject.getParent() != null) {
+                toCheck.add(mavenProject.getParent());
             }
         }
 
