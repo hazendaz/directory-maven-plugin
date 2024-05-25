@@ -83,7 +83,7 @@
         <project.build.outputTimestamp>1715813128</project.build.outputTimestamp>
 
         <!-- Maven Artifacts -->
-        <maven.version>3.9.6</maven.version>
+        <maven.version>3.9.7</maven.version>
         <maven-plugin.version>3.13.0</maven-plugin.version>
 
         <!-- Junit -->
