@@ -84,7 +84,7 @@
 
         <!-- Maven Artifacts -->
         <maven.version>3.9.7</maven.version>
-        <maven-plugin.version>3.13.0</maven-plugin.version>
+        <maven-plugin.version>3.13.1</maven-plugin.version>
 
         <!-- Junit -->
         <junit.version>5.10.2</junit.version>
