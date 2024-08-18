@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.github.hazendaz.maven.directory_maven_plugin"},{"l":"org.commonjava.maven.plugins.execroot"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"com.github.hazendaz.maven.directory","l":"com.github.hazendaz.maven.directory_maven_plugin"},{"m":"com.github.hazendaz.maven.directory","l":"org.commonjava.maven.plugins.execroot"}];updateSearchResults();
