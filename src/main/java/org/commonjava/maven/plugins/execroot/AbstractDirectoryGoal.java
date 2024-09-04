@@ -1,5 +1,5 @@
 /*
- *    Copyright 2011-2023 the original author or authors.
+ *    Copyright 2011-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -95,7 +95,8 @@ public abstract class AbstractDirectoryGoal extends AbstractMojo {
         }
 
         if (getLog().isDebugEnabled()) {
-            try (StringWriter str = new StringWriter(); PrintWriter print = new PrintWriter(str)) {
+            try (StringWriter str = new StringWriter();
+                    PrintWriter print = new PrintWriter(str)) {
                 currentProject.getProperties().list(print);
 
                 getLog().debug("After setting property '" + property + "', project properties are:\n\n" + str);
