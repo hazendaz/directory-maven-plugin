@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DirectoryOfGoal.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">directory-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">org.commonjava.maven.plugins.execroot</a> &gt; <span class="el_source">DirectoryOfGoal.java</span></div><h1>DirectoryOfGoal.java</h1><pre class="source lang-java linenums">/*
+ *    Copyright 2011-2024 the original author or authors.
+ *
+ *    Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+package org.commonjava.maven.plugins.execroot;
+
+import java.io.File;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.List;
+
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
+
+/**
+ * The Class DirectoryOfGoal.
+ */
+@Mojo(name = &quot;directory-of&quot;, defaultPhase = LifecyclePhase.INITIALIZE, requiresProject = true, threadSafe = true)
+<span class="nc" id="L33">public class DirectoryOfGoal extends AbstractDirectoryGoal {</span>
+
+    /** The Constant DIR_OF_CONTEXT_KEY. */
+    protected static final String DIR_OF_CONTEXT_KEY = &quot;directories.directoryOf-&quot;;
+
+    /** The project. */
+    @Parameter
+    private ProjectRef project;
+
+    /** The projects. */
+    @Parameter(defaultValue = &quot;${reactorProjects}&quot;, readonly = true)
+    protected List&lt;MavenProject&gt; projects;
+
+    @Override
+    protected File findDirectory() throws MojoExecutionException {
+<span class="nc" id="L48">        File dir = null;</span>
+
+<span class="nc" id="L50">        final Deque&lt;MavenProject&gt; toCheck = new ArrayDeque&lt;&gt;(projects);</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        while (!toCheck.isEmpty()) {</span>
+<span class="nc" id="L52">            final MavenProject mavenProject = toCheck.pop();</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">            if (project.matches(mavenProject)) {</span>
+<span class="nc" id="L54">                dir = mavenProject.getBasedir();</span>
+<span class="nc" id="L55">                break;</span>
+            }
+
+<span class="nc bnc" id="L58" title="All 2 branches missed.">            if (mavenProject.getParent() != null) {</span>
+<span class="nc" id="L59">                toCheck.add(mavenProject.getParent());</span>
+            }
+<span class="nc" id="L61">        }</span>
+
+<span class="nc bnc" id="L63" title="All 2 branches missed.">        if (dir == null) {</span>
+<span class="nc" id="L64">            throw new MojoExecutionException(&quot;Cannot find directory for project: &quot; + project);</span>
+        }
+
+<span class="nc" id="L67">        return dir;</span>
+    }
+
+    @Override
+    protected String getContextKey() {
+<span class="nc" id="L72">        return DIR_OF_CONTEXT_KEY + project;</span>
+    }
+
+    @Override
+    protected String getLogLabel() {
+<span class="nc" id="L77">        return &quot;Directory of &quot; + project;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

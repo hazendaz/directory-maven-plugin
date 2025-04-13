@@ -1,0 +1,1 @@
+moduleSearchIndex = [{"l":"com.github.hazendaz.maven.directory"}];updateSearchResults();

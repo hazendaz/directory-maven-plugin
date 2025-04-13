@@ -1,0 +1,8 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+directory-maven-plugin,com.github.hazendaz.maven.directory_maven_plugin,HelpMojo,773,0,112,0,156,0,72,0,16,0
+directory-maven-plugin,org.commonjava.maven.plugins.execroot,DirectoryOfGoal,58,0,8,0,16,0,8,0,4,0
+directory-maven-plugin,org.commonjava.maven.plugins.execroot,HighestBasedirGoal.PathComparator,20,0,2,0,4,0,3,0,2,0
+directory-maven-plugin,org.commonjava.maven.plugins.execroot,HighestBasedirGoal,135,0,18,0,33,0,13,0,4,0
+directory-maven-plugin,org.commonjava.maven.plugins.execroot,ExecutionRootGoal,15,0,0,0,4,0,4,0,4,0
+directory-maven-plugin,org.commonjava.maven.plugins.execroot,AbstractDirectoryGoal,114,0,12,0,28,0,8,0,2,0
+directory-maven-plugin,org.commonjava.maven.plugins.execroot,ProjectRef,48,17,12,0,7,6,11,4,5,4

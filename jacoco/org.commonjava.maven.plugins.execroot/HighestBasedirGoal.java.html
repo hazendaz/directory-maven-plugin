@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HighestBasedirGoal.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">directory-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">org.commonjava.maven.plugins.execroot</a> &gt; <span class="el_source">HighestBasedirGoal.java</span></div><h1>HighestBasedirGoal.java</h1><pre class="source lang-java linenums">/*
+ *    Copyright 2011-2025 the original author or authors.
+ *
+ *    Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+package org.commonjava.maven.plugins.execroot;
+
+import java.io.File;
+import java.nio.file.Path;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Deque;
+import java.util.List;
+import java.util.Locale;
+
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
+
+/**
+ * The Class HighestBasedirGoal.
+ */
+@Mojo(name = &quot;highest-basedir&quot;, defaultPhase = LifecyclePhase.INITIALIZE, requiresProject = true, threadSafe = true)
+<span class="nc" id="L38">public class HighestBasedirGoal extends AbstractDirectoryGoal {</span>
+
+    /**
+     * The Class PathComparator.
+     */
+<span class="nc" id="L43">    public static final class PathComparator implements Comparator&lt;File&gt; {</span>
+        @Override
+        public int compare(final File first, final File second) {
+<span class="nc bnc" id="L46" title="All 2 branches missed.">            if (System.getProperty(&quot;os.name&quot;).startsWith(&quot;Windows&quot;)) {</span>
+<span class="nc" id="L47">                return first.getAbsolutePath().compareToIgnoreCase(second.getAbsolutePath());</span>
+            }
+<span class="nc" id="L49">            return first.getAbsolutePath().compareTo(second.getAbsolutePath());</span>
+        }
+    }
+
+    /** The Constant HIGHEST_DIR_CONTEXT_KEY. */
+    protected static final String HIGHEST_DIR_CONTEXT_KEY = &quot;directories.highestDir&quot;;
+
+    /** The projects. */
+    @Parameter(defaultValue = &quot;${reactorProjects}&quot;, readonly = true)
+    protected List&lt;MavenProject&gt; projects;
+
+    @Override
+    protected File findDirectory() throws MojoExecutionException {
+<span class="nc" id="L62">        final Deque&lt;MavenProject&gt; toCheck = new ArrayDeque&lt;&gt;(projects);</span>
+        // exclude projects loaded directly from the local repository (super-pom's etc)
+<span class="nc" id="L64">        String localRepoBaseDir = session.getRepositorySession().getLocalRepository().getBasedir().getAbsolutePath();</span>
+
+<span class="nc" id="L66">        final List&lt;File&gt; files = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        while (!toCheck.isEmpty()) {</span>
+<span class="nc" id="L68">            final MavenProject mavenProject = toCheck.pop();</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">            if (mavenProject.getBasedir() == null</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">                    || mavenProject.getBasedir().toString().startsWith(localRepoBaseDir)) {</span>
+                // we've hit a parent that was resolved. Don't bother going higher up the hierarchy.
+<span class="nc" id="L72">                continue;</span>
+            }
+
+<span class="nc" id="L75">            Path path = Path.of(mavenProject.getBasedir().toURI()).normalize();</span>
+
+<span class="nc bnc" id="L77" title="All 2 branches missed.">            if (!files.contains(path.toFile())) {</span>
+                // add to zero to pre-sort the paths...the shortest (parent) paths should end up near the top.
+<span class="nc" id="L79">                files.add(0, path.toFile());</span>
+            }
+
+<span class="nc bnc" id="L82" title="All 2 branches missed.">            if (mavenProject.getParent() != null) {</span>
+<span class="nc" id="L83">                toCheck.add(mavenProject.getParent());</span>
+            }
+<span class="nc" id="L85">        }</span>
+
+<span class="nc bnc" id="L87" title="All 2 branches missed.">        if (files.isEmpty()) {</span>
+<span class="nc" id="L88">            throw new MojoExecutionException(&quot;No project base directories found! Are you sure you're &quot;</span>
+                    + &quot;executing this on a valid Maven project?&quot;);
+        }
+
+<span class="nc" id="L92">        Collections.sort(files, new PathComparator());</span>
+<span class="nc" id="L93">        final File dir = files.get(0);</span>
+
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        if (files.size() &gt; 1) {</span>
+<span class="nc" id="L96">            final File next = files.get(1);</span>
+<span class="nc" id="L97">            String dirPath = dir.getAbsolutePath();</span>
+<span class="nc" id="L98">            String nextPath = next.getAbsolutePath();</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">            if (System.getProperty(&quot;os.name&quot;).startsWith(&quot;Windows&quot;)) {</span>
+<span class="nc" id="L100">                dirPath = dirPath.toLowerCase(Locale.ENGLISH);</span>
+<span class="nc" id="L101">                nextPath = nextPath.toLowerCase(Locale.ENGLISH);</span>
+            }
+<span class="nc bnc" id="L103" title="All 2 branches missed.">            if (!nextPath.startsWith(dirPath)) {</span>
+<span class="nc" id="L104">                getLog().error(&quot;Candidate 1: &quot; + dirPath);</span>
+<span class="nc" id="L105">                getLog().error(&quot;Candidate 2: &quot; + nextPath);</span>
+<span class="nc" id="L106">                throw new MojoExecutionException(&quot;Cannot find a single highest directory for this project set. &quot;</span>
+                        + &quot;First two candidates directories don't share a common root.&quot; + &quot; Candidate 1: &quot; + dirPath
+                        + &quot; Candidate 2: &quot; + nextPath);
+            }
+        }
+
+<span class="nc" id="L112">        return dir;</span>
+    }
+
+    @Override
+    protected String getContextKey() {
+<span class="nc" id="L117">        return HIGHEST_DIR_CONTEXT_KEY;</span>
+    }
+
+    @Override
+    protected String getLogLabel() {
+<span class="nc" id="L122">        return &quot;Highest basedir&quot;;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
