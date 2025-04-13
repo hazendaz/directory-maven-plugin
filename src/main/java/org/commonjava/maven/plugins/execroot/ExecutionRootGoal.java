@@ -1,5 +1,5 @@
 /*
- *    Copyright 2011-2023 the original author or authors.
+ *    Copyright 2011-2025 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package org.commonjava.maven.plugins.execroot;
 
 import java.io.File;
+import java.nio.file.Path;
 
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -31,7 +32,7 @@ public class ExecutionRootGoal extends AbstractDirectoryGoal {
 
     @Override
     protected File findDirectory() {
-        return new File(session.getExecutionRootDirectory());
+        return Path.of(session.getExecutionRootDirectory()).toFile();
     }
 
     @Override

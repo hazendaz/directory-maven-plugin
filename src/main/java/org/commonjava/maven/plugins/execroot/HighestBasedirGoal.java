@@ -1,5 +1,5 @@
 /*
- *    Copyright 2011-2024 the original author or authors.
+ *    Copyright 2011-2025 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 package org.commonjava.maven.plugins.execroot;
 
 import java.io.File;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -72,11 +72,11 @@ public class HighestBasedirGoal extends AbstractDirectoryGoal {
                 continue;
             }
 
-            File file = new File(Paths.get(mavenProject.getBasedir().toURI()).normalize().toString());
+            Path path = Path.of(mavenProject.getBasedir().toURI()).normalize();
 
-            if (!files.contains(file)) {
+            if (!files.contains(path.toFile())) {
                 // add to zero to pre-sort the paths...the shortest (parent) paths should end up near the top.
-                files.add(0, file);
+                files.add(0, path.toFile());
             }
 
             if (mavenProject.getParent() != null) {
