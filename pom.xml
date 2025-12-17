@@ -87,7 +87,7 @@
         <project.build.outputTimestamp>1760399295</project.build.outputTimestamp>
 
         <!-- Maven Artifacts -->
-        <maven.version>3.9.11</maven.version>
+        <maven.version>3.9.12</maven.version>
         <maven-plugin.version>3.15.2</maven-plugin.version>
 
         <!-- Resolver -->
