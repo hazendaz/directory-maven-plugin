@@ -1,6 +1,8 @@
 Directory Plugin for Maven
 ==========================
 
+![hazendaz](src/site/resources/images/hazendaz-banner.jpg)
+
 Disclaimer
 ----------
 
