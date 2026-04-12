@@ -15,6 +15,8 @@
  */
 package org.commonjava.maven.plugins.execroot;
 
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,6 +45,127 @@ public class ProjectRefTest {
         projectRef.setGroupId("groupId");
         projectRef.setArtifactId("artifactId");
         Assertions.assertEquals("groupId:artifactId", projectRef.toString());
+    }
+
+    /**
+     * Validate succeeds when both groupId and artifactId are set.
+     */
+    @Test
+    void validateSucceedsWhenBothFieldsAreSet() throws MojoExecutionException {
+        projectRef.setGroupId("com.example");
+        projectRef.setArtifactId("my-artifact");
+        Assertions.assertDoesNotThrow(() -> projectRef.validate());
+    }
+
+    /**
+     * Validate fails when groupId is null.
+     */
+    @Test
+    void validateFailsWhenGroupIdIsNull() {
+        projectRef.setArtifactId("my-artifact");
+        Assertions.assertThrows(MojoExecutionException.class, () -> projectRef.validate());
+    }
+
+    /**
+     * Validate fails when groupId is empty.
+     */
+    @Test
+    void validateFailsWhenGroupIdIsEmpty() {
+        projectRef.setGroupId("");
+        projectRef.setArtifactId("my-artifact");
+        Assertions.assertThrows(MojoExecutionException.class, () -> projectRef.validate());
+    }
+
+    /**
+     * Validate fails when groupId is blank (whitespace only).
+     */
+    @Test
+    void validateFailsWhenGroupIdIsBlank() {
+        projectRef.setGroupId("   ");
+        projectRef.setArtifactId("my-artifact");
+        Assertions.assertThrows(MojoExecutionException.class, () -> projectRef.validate());
+    }
+
+    /**
+     * Validate fails when artifactId is null.
+     */
+    @Test
+    void validateFailsWhenArtifactIdIsNull() {
+        projectRef.setGroupId("com.example");
+        Assertions.assertThrows(MojoExecutionException.class, () -> projectRef.validate());
+    }
+
+    /**
+     * Validate fails when artifactId is empty.
+     */
+    @Test
+    void validateFailsWhenArtifactIdIsEmpty() {
+        projectRef.setGroupId("com.example");
+        projectRef.setArtifactId("");
+        Assertions.assertThrows(MojoExecutionException.class, () -> projectRef.validate());
+    }
+
+    /**
+     * Matches returns true when groupId and artifactId both match.
+     */
+    @Test
+    void matchesReturnsTrueForMatchingProject() {
+        projectRef.setGroupId("com.example");
+        projectRef.setArtifactId("my-artifact");
+
+        MavenProjectStub project = new MavenProjectStub();
+        project.setGroupId("com.example");
+        project.setArtifactId("my-artifact");
+
+        Assertions.assertTrue(projectRef.matches(project));
+    }
+
+    /**
+     * Matches returns false when groupId does not match.
+     */
+    @Test
+    void matchesReturnsFalseForWrongGroupId() {
+        projectRef.setGroupId("com.example");
+        projectRef.setArtifactId("my-artifact");
+
+        MavenProjectStub project = new MavenProjectStub();
+        project.setGroupId("org.other");
+        project.setArtifactId("my-artifact");
+
+        Assertions.assertFalse(projectRef.matches(project));
+    }
+
+    /**
+     * Matches returns false when artifactId does not match.
+     */
+    @Test
+    void matchesReturnsFalseForWrongArtifactId() {
+        projectRef.setGroupId("com.example");
+        projectRef.setArtifactId("my-artifact");
+
+        MavenProjectStub project = new MavenProjectStub();
+        project.setGroupId("com.example");
+        project.setArtifactId("other-artifact");
+
+        Assertions.assertFalse(projectRef.matches(project));
+    }
+
+    /**
+     * Test get and set groupId.
+     */
+    @Test
+    void testGetSetGroupId() {
+        projectRef.setGroupId("com.example");
+        Assertions.assertEquals("com.example", projectRef.getGroupId());
+    }
+
+    /**
+     * Test get and set artifactId.
+     */
+    @Test
+    void testGetSetArtifactId() {
+        projectRef.setArtifactId("my-artifact");
+        Assertions.assertEquals("my-artifact", projectRef.getArtifactId());
     }
 
 }
