@@ -16,6 +16,7 @@
 package org.commonjava.maven.plugins.execroot;
 
 import java.io.File;
+import java.nio.file.Path;
 
 import org.commonjava.maven.plugins.execroot.HighestBasedirGoal.PathComparator;
 import org.junit.jupiter.api.Assertions;
@@ -34,7 +35,7 @@ public class PathComparatorTest {
      */
     @Test
     void compareEqualPathsReturnsZero() {
-        File file = new File("/some/path/dir");
+        File file = Path.of("/some/path/dir").toFile();
         Assertions.assertEquals(0, comparator.compare(file, file));
     }
 
@@ -43,8 +44,8 @@ public class PathComparatorTest {
      */
     @Test
     void compareParentDirectorySortsBeforeChild() {
-        File parent = new File("/some/path");
-        File child = new File("/some/path/child");
+        File parent = Path.of("/some/path").toFile();
+        File child = Path.of("/some/path/child").toFile();
         // parent path is alphabetically less than child path
         Assertions.assertTrue(comparator.compare(parent, child) < 0);
     }
@@ -54,8 +55,8 @@ public class PathComparatorTest {
      */
     @Test
     void compareChildDirectorySortsAfterParent() {
-        File parent = new File("/some/path");
-        File child = new File("/some/path/child");
+        File parent = Path.of("/some/path").toFile();
+        File child = Path.of("/some/path/child").toFile();
         Assertions.assertTrue(comparator.compare(child, parent) > 0);
     }
 
@@ -64,8 +65,8 @@ public class PathComparatorTest {
      */
     @Test
     void compareAlphabeticalOrdering() {
-        File aDir = new File("/project/a-module");
-        File bDir = new File("/project/b-module");
+        File aDir = Path.of("/project/a-module").toFile();
+        File bDir = Path.of("/project/b-module").toFile();
         Assertions.assertTrue(comparator.compare(aDir, bDir) < 0);
         Assertions.assertTrue(comparator.compare(bDir, aDir) > 0);
     }

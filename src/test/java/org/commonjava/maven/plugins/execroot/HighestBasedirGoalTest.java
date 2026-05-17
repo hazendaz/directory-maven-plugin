@@ -67,11 +67,11 @@ public class HighestBasedirGoalTest {
      */
     @Test
     void findDirectoryWithSingleProjectReturnsItsBasedir() throws Exception {
-        File projectDir = new File(tempDir, "project");
+        File projectDir = tempDir.toPath().resolve("project").toFile();
         projectDir.mkdirs();
 
         TestMavenProject project = new TestMavenProject("com.example", "artifact", projectDir);
-        HighestBasedirGoal mojo = createMojo(List.of(project), new File(tempDir, "localrepo"));
+        HighestBasedirGoal mojo = createMojo(List.of(project), tempDir.toPath().resolve("localrepo").toFile());
 
         File result = mojo.findDirectory();
 
@@ -83,15 +83,16 @@ public class HighestBasedirGoalTest {
      */
     @Test
     void findDirectoryWithParentChildHierarchyReturnsParent() throws Exception {
-        File parentDir = new File(tempDir, "parent");
-        File childDir = new File(parentDir, "child");
+        File parentDir = tempDir.toPath().resolve("parent").toFile();
+        File childDir = parentDir.toPath().resolve("child").toFile();
         parentDir.mkdirs();
         childDir.mkdirs();
 
         TestMavenProject parent = new TestMavenProject("com.example", "parent", parentDir);
         TestMavenProject child = new TestMavenProject("com.example", "child", childDir);
 
-        HighestBasedirGoal mojo = createMojo(Arrays.asList(parent, child), new File(tempDir, "localrepo"));
+        HighestBasedirGoal mojo = createMojo(Arrays.asList(parent, child),
+                tempDir.toPath().resolve("localrepo").toFile());
 
         File result = mojo.findDirectory();
 
@@ -104,9 +105,9 @@ public class HighestBasedirGoalTest {
      */
     @Test
     void findDirectoryThrowsWhenAllProjectsAreInsideLocalRepository() throws Exception {
-        File localRepo = new File(tempDir, "localrepo");
+        File localRepo = tempDir.toPath().resolve("localrepo").toFile();
         // Project lives inside the local repository
-        File insideRepoDir = new File(localRepo, "com/example/artifact/1.0");
+        File insideRepoDir = localRepo.toPath().resolve("com/example/artifact/1.0").toFile();
         insideRepoDir.mkdirs();
 
         TestMavenProject project = new TestMavenProject("com.example", "artifact", insideRepoDir);
@@ -121,15 +122,16 @@ public class HighestBasedirGoalTest {
      */
     @Test
     void findDirectoryThrowsWhenProjectsDoNotShareCommonRoot() throws Exception {
-        File rootA = new File(tempDir, "rootA");
-        File rootB = new File(tempDir, "rootB");
+        File rootA = tempDir.toPath().resolve("rootA").toFile();
+        File rootB = tempDir.toPath().resolve("rootB").toFile();
         rootA.mkdirs();
         rootB.mkdirs();
 
         TestMavenProject projectA = new TestMavenProject("com.example", "a", rootA);
         TestMavenProject projectB = new TestMavenProject("com.example", "b", rootB);
 
-        HighestBasedirGoal mojo = createMojo(Arrays.asList(projectA, projectB), new File(tempDir, "localrepo"));
+        HighestBasedirGoal mojo = createMojo(Arrays.asList(projectA, projectB),
+                tempDir.toPath().resolve("localrepo").toFile());
 
         Assertions.assertThrows(MojoExecutionException.class, () -> mojo.findDirectory());
     }
@@ -140,11 +142,11 @@ public class HighestBasedirGoalTest {
      */
     @Test
     void findDirectorySkipsProjectsInsideLocalRepository() throws Exception {
-        File localRepo = new File(tempDir, "localrepo");
-        File projectInsideRepo = new File(localRepo, "com/example/artifact/1.0");
+        File localRepo = tempDir.toPath().resolve("localrepo").toFile();
+        File projectInsideRepo = localRepo.toPath().resolve("com/example/artifact/1.0").toFile();
         projectInsideRepo.mkdirs();
 
-        File realProjectDir = new File(tempDir, "realproject");
+        File realProjectDir = tempDir.toPath().resolve("realproject").toFile();
         realProjectDir.mkdirs();
 
         TestMavenProject insideRepo = new TestMavenProject("com.example", "inside-repo", projectInsideRepo);
@@ -162,13 +164,13 @@ public class HighestBasedirGoalTest {
      */
     @Test
     void executeSetsMavenProjectProperty() throws Exception {
-        File projectDir = new File(tempDir, "project");
+        File projectDir = tempDir.toPath().resolve("project").toFile();
         projectDir.mkdirs();
 
         TestMavenProject reactor = new TestMavenProject("com.example", "artifact", projectDir);
         TestMavenProject currentProject = new TestMavenProject("test", "current", tempDir);
 
-        HighestBasedirGoal mojo = createMojo(List.of(reactor), new File(tempDir, "localrepo"));
+        HighestBasedirGoal mojo = createMojo(List.of(reactor), tempDir.toPath().resolve("localrepo").toFile());
         setField(mojo, "currentProject", currentProject);
 
         mojo.execute();
