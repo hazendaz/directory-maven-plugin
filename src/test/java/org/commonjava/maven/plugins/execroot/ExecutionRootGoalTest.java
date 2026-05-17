@@ -20,6 +20,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -70,7 +71,7 @@ public class ExecutionRootGoalTest {
 
         File result = mojo.findDirectory();
 
-        Assertions.assertEquals(new File(System.getProperty("java.io.tmpdir")), result);
+        Assertions.assertEquals(Path.of(System.getProperty("java.io.tmpdir")).toFile(), result);
     }
 
     /**
@@ -98,7 +99,7 @@ public class ExecutionRootGoalTest {
 
         String value = project.getProperties().getProperty("testProperty");
         Assertions.assertNotNull(value, "Project property must be set after execute()");
-        Assertions.assertEquals(new File(System.getProperty("java.io.tmpdir")).getAbsolutePath(), value);
+        Assertions.assertEquals(Path.of(System.getProperty("java.io.tmpdir")).toFile().getAbsolutePath(), value);
     }
 
     /**
@@ -163,7 +164,7 @@ public class ExecutionRootGoalTest {
      */
     @Test
     void executeUsesPluginContextCacheOnSubsequentCalls() throws Exception {
-        File cachedDir = new File(System.getProperty("java.io.tmpdir"));
+        File cachedDir = Path.of(System.getProperty("java.io.tmpdir")).toFile();
         TestMavenProject project = new TestMavenProject();
         ExecutionRootGoal mojo = createConfiguredMojo(project, false, false, false);
 

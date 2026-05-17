@@ -67,7 +67,7 @@ public class DirectoryOfGoalTest {
      */
     @Test
     void findDirectoryReturnsBasedirOfMatchedProject() throws Exception {
-        File projectDir = new File(tempDir, "my-project");
+        File projectDir = tempDir.toPath().resolve("my-project").toFile();
         projectDir.mkdirs();
 
         TestMavenProject target = new TestMavenProject("com.example", "target-artifact", projectDir);
@@ -87,14 +87,14 @@ public class DirectoryOfGoalTest {
      */
     @Test
     void findDirectoryFindsProjectViaParentChain() throws Exception {
-        File parentDir = new File(tempDir, "parent");
+        File parentDir = tempDir.toPath().resolve("parent").toFile();
         parentDir.mkdirs();
 
         TestMavenProject parentProject = new TestMavenProject("com.example", "parent-artifact", parentDir);
 
         // A child project whose parent is the one we are looking for
         TestMavenProject childProject = new TestMavenProject("com.example", "child-artifact",
-                new File(tempDir, "child"));
+                tempDir.toPath().resolve("child").toFile());
         childProject.setParent(parentProject);
 
         DirectoryOfGoal mojo = createMojoWithProject("com.example", "parent-artifact");
@@ -123,7 +123,7 @@ public class DirectoryOfGoalTest {
      */
     @Test
     void executeSetsMavenProjectProperty() throws Exception {
-        File projectDir = new File(tempDir, "my-project");
+        File projectDir = tempDir.toPath().resolve("my-project").toFile();
         projectDir.mkdirs();
 
         TestMavenProject reactor = new TestMavenProject("com.example", "target-artifact", projectDir);
