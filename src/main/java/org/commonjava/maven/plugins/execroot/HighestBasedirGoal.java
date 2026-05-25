@@ -19,7 +19,6 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.List;
@@ -89,7 +88,7 @@ public class HighestBasedirGoal extends AbstractDirectoryGoal {
                     + "executing this on a valid Maven project?");
         }
 
-        Collections.sort(files, new PathComparator());
+        files.sort(new PathComparator());
         final File dir = files.get(0);
 
         if (files.size() > 1) {
