@@ -91,7 +91,8 @@ public class HelpMojoTest {
         Document document = parse("<root><a>v</a></root>");
 
         MojoExecutionException exception = Assertions.assertThrows(MojoExecutionException.class,
-                () -> invokeStatic("getSingleChild", new Class<?>[] { Node.class, String.class }, document, "missing"));
+                () -> invokeStatic("getSingleChild", new Class<?>[] { Node.class, String.class },
+                        document.getDocumentElement(), "missing"));
         Assertions.assertTrue(exception.getMessage().contains("Could not find missing"));
     }
 
@@ -103,7 +104,8 @@ public class HelpMojoTest {
         Document document = parse("<root><a>one</a><a>two</a></root>");
 
         MojoExecutionException exception = Assertions.assertThrows(MojoExecutionException.class,
-                () -> invokeStatic("getSingleChild", new Class<?>[] { Node.class, String.class }, document, "a"));
+                () -> invokeStatic("getSingleChild", new Class<?>[] { Node.class, String.class },
+                        document.getDocumentElement(), "a"));
         Assertions.assertTrue(exception.getMessage().contains("Multiple a"));
     }
 
@@ -114,7 +116,8 @@ public class HelpMojoTest {
     void findSingleChildReturnsNullWhenElementMissing() throws Exception {
         Document document = parse("<root><a>v</a></root>");
 
-        Object result = invokeStatic("findSingleChild", new Class<?>[] { Node.class, String.class }, document, "b");
+        Object result = invokeStatic("findSingleChild", new Class<?>[] { Node.class, String.class },
+                document.getDocumentElement(), "b");
 
         Assertions.assertNull(result);
     }
