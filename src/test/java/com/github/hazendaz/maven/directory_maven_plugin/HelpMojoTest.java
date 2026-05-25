@@ -17,6 +17,7 @@ package com.github.hazendaz.maven.directory_maven_plugin;
 
 import java.io.StringReader;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -126,8 +127,7 @@ public class HelpMojoTest {
         String extracted = (String) invokeStatic("getPropertyFromExpression", new Class<?>[] { String.class },
                 "${directory.skip}");
         String nested = (String) invokeStatic("getPropertyFromExpression", new Class<?>[] { String.class },
-                "${outer${inner}}"
-        );
+                "${outer${inner}}");
         String nonPlaceholder = (String) invokeStatic("getPropertyFromExpression", new Class<?>[] { String.class },
                 "literal-value");
 
@@ -160,16 +160,13 @@ public class HelpMojoTest {
         method.setAccessible(true);
         try {
             return method.invoke(null, args);
-        } catch (ReflectiveOperationException e) {
-            throw unwrap(e);
+        } catch (InvocationTargetException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof Exception) {
+                throw (Exception) cause;
+            }
+            throw new RuntimeException(cause);
         }
-    }
-
-    private static Throwable unwrap(ReflectiveOperationException e) throws Exception {
-        if (e.getCause() instanceof Exception) {
-            throw (Exception) e.getCause();
-        }
-        throw e;
     }
 
     private static void setField(Object target, String name, Object value) throws Exception {
