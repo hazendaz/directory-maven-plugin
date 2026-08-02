@@ -88,7 +88,7 @@ public class ProjectRef {
      * @return true, if successful
      */
     private boolean empty(final String str) {
-        return str == null || str.trim().length() == 0;
+        return str == null || str.trim().isEmpty();
     }
 
     /**
