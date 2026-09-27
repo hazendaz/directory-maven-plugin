@@ -77,6 +77,9 @@
         <java.version>11</java.version>
         <java.release.version>11</java.release.version>
 
+        <!-- Jacoco minimum code coverage -->
+        <jacoco.minimum.coverage>0.73</jacoco.minimum.coverage>
+
         <!-- Checkstyle -->
         <checkstyle.config>checkstyle-4space.xml</checkstyle.config>
 
