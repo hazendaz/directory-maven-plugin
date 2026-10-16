@@ -81,6 +81,14 @@
     "optional" : false,
     "integrity" : "sha512:HiAjtudxUzmjCSJslGNdt3/T2Nf2/BBI4BONxLT/J1QOHh/yI4pBuUApqUl7KTWvbosF7u7Wm3ZgDC9O7T427Q=="
   }, {
+    "groupId" : "commons-logging",
+    "artifactId" : "commons-logging",
+    "version" : "1.4.0",
+    "scope" : "provided",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:XDM9kl+B/dCagBdv8VzTg4HrEunsLax18RPWYAYAIXWzPN2aBmgQDFxqSa6B+fV2kJuJIZo0WgB17UaDqZdXCg=="
+  }, {
     "groupId" : "javax.inject",
     "artifactId" : "javax.inject",
     "version" : "1",
@@ -139,11 +147,11 @@
   }, {
     "groupId" : "org.apache.maven.resolver",
     "artifactId" : "maven-resolver-api",
-    "version" : "1.9.27",
+    "version" : "2.0.24",
     "scope" : "provided",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:IzQqZzg81Afgz4d5eD/m16ibty7NecaCNBmwjiesWytui60hl+hB3Pf+wbU7463qWUMoZNb3tz39iThoeojauA=="
+    "integrity" : "sha512:pX5e2tTcFu9ImZwQ9Z+tqZ2krSbiWwcTdnNrLF08R/CB2s52d63kvkGsTdE2xewpYYONNNIzEau5Ssr6z4qzEw=="
   }, {
     "groupId" : "org.apache.maven.resolver",
     "artifactId" : "maven-resolver-connector-basic",
@@ -440,14 +448,6 @@
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:ZoW3U7mm61eWdqaESlTY9Bk1OS3F/qr+2RV3MXm1D31WSwcoQAROfQkmR0WYwvFXgGNF9CpSmA7DqjbJK3E2GQ=="
-  }, {
-    "groupId" : "org.slf4j",
-    "artifactId" : "jcl-over-slf4j",
-    "version" : "2.0.19",
-    "scope" : "provided",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:TfR63GNSM/DgptLfY1AUDBgbZd6cggGX2hXJIwb2heN8rLN7rqd99yyBTm3eFwcvH68LDNDo1ggKvepACY8oEw=="
   }, {
     "groupId" : "org.slf4j",
     "artifactId" : "slf4j-api",
