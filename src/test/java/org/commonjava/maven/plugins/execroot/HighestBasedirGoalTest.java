@@ -48,7 +48,7 @@ public class HighestBasedirGoalTest {
      * {@link HighestBasedirGoal#getContextKey()} must return the well-known constant.
      */
     @Test
-    void getContextKeyReturnsCorrectValue() {
+    void contextKeyReturnsCorrectValue() {
         HighestBasedirGoal mojo = new HighestBasedirGoal();
         Assertions.assertEquals(HighestBasedirGoal.HIGHEST_DIR_CONTEXT_KEY, mojo.getContextKey());
     }
@@ -57,13 +57,16 @@ public class HighestBasedirGoalTest {
      * {@link HighestBasedirGoal#getLogLabel()} must return a human-readable label.
      */
     @Test
-    void getLogLabelReturnsCorrectValue() {
+    void logLabelReturnsCorrectValue() {
         HighestBasedirGoal mojo = new HighestBasedirGoal();
         Assertions.assertEquals("Highest basedir", mojo.getLogLabel());
     }
 
     /**
      * With a single project the returned directory must equal that project's basedir.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void findDirectoryWithSingleProjectReturnsItsBasedir() throws Exception {
@@ -80,6 +83,9 @@ public class HighestBasedirGoalTest {
 
     /**
      * With a parent directory that contains a child, the parent (alphabetically first path) must be returned.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void findDirectoryWithParentChildHierarchyReturnsParent() throws Exception {
@@ -102,6 +108,9 @@ public class HighestBasedirGoalTest {
     /**
      * When all projects are located inside the local repository they are all filtered out, and a
      * {@link MojoExecutionException} must be thrown.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void findDirectoryThrowsWhenAllProjectsAreInsideLocalRepository() throws Exception {
@@ -119,6 +128,9 @@ public class HighestBasedirGoalTest {
     /**
      * When two projects are in sibling directories that do not share a common root, a {@link MojoExecutionException}
      * must be thrown.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void findDirectoryThrowsWhenProjectsDoNotShareCommonRoot() throws Exception {
@@ -139,6 +151,9 @@ public class HighestBasedirGoalTest {
     /**
      * Projects whose basedir starts with the local repository path must be ignored, and only the project outside the
      * repository is returned.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void findDirectorySkipsProjectsInsideLocalRepository() throws Exception {
@@ -161,6 +176,9 @@ public class HighestBasedirGoalTest {
 
     /**
      * execute() must set the project property to the highest basedir path.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void executeSetsMavenProjectProperty() throws Exception {
@@ -187,6 +205,16 @@ public class HighestBasedirGoalTest {
     /**
      * Creates a fully-wired {@link HighestBasedirGoal} with the given reactor projects and local repository base
      * directory.
+     *
+     * @param projects
+     *            the projects
+     * @param localRepoDir
+     *            the local repo dir
+     *
+     * @return the highest basedir goal
+     *
+     * @throws Exception
+     *             the exception
      */
     private HighestBasedirGoal createMojo(List<TestMavenProject> projects, File localRepoDir) throws Exception {
         HighestBasedirGoal mojo = new HighestBasedirGoal();
@@ -217,9 +245,23 @@ public class HighestBasedirGoalTest {
      * A {@link MavenProjectStub} with stable {@link Properties} and configurable basedir.
      */
     static class TestMavenProject extends MavenProjectStub {
+
+        /** The properties. */
         private final Properties properties = new Properties();
+
+        /** The basedir. */
         private final File basedir;
 
+        /**
+         * Instantiates a new test maven project.
+         *
+         * @param groupId
+         *            the group id
+         * @param artifactId
+         *            the artifact id
+         * @param basedir
+         *            the basedir
+         */
         TestMavenProject(String groupId, String artifactId, File basedir) {
             setGroupId(groupId);
             setArtifactId(artifactId);
@@ -239,6 +281,16 @@ public class HighestBasedirGoalTest {
 
     /**
      * Sets the value of a (possibly non-public) field declared anywhere in the class hierarchy.
+     *
+     * @param target
+     *            the target
+     * @param name
+     *            the name
+     * @param value
+     *            the value
+     *
+     * @throws Exception
+     *             the exception
      */
     private static void setField(Object target, String name, Object value) throws Exception {
         Class<?> clazz = target.getClass();

@@ -45,7 +45,7 @@ public class ExecutionRootGoalTest {
      * {@link ExecutionRootGoal#getContextKey()} must return the well-known constant.
      */
     @Test
-    void getContextKeyReturnsCorrectValue() {
+    void contextKeyReturnsCorrectValue() {
         ExecutionRootGoal mojo = new ExecutionRootGoal();
         Assertions.assertEquals(ExecutionRootGoal.EXEC_ROOT_CONTEXT_KEY, mojo.getContextKey());
     }
@@ -54,13 +54,16 @@ public class ExecutionRootGoalTest {
      * {@link ExecutionRootGoal#getLogLabel()} must return a human-readable label.
      */
     @Test
-    void getLogLabelReturnsCorrectValue() {
+    void logLabelReturnsCorrectValue() {
         ExecutionRootGoal mojo = new ExecutionRootGoal();
         Assertions.assertEquals("Execution-Root", mojo.getLogLabel());
     }
 
     /**
      * {@link ExecutionRootGoal#findDirectory()} must return the directory reported by the session.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void findDirectoryReturnsSessionExecutionRootDirectory() throws Exception {
@@ -76,6 +79,9 @@ public class ExecutionRootGoalTest {
 
     /**
      * When {@code skip=true} the mojo must return without setting any project property.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void executeWithSkipTrueDoesNotSetProperty() throws Exception {
@@ -89,6 +95,9 @@ public class ExecutionRootGoalTest {
 
     /**
      * Normal execution must set the project property to the execution root path.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void executeNormalSetsProjectProperty() throws Exception {
@@ -104,6 +113,9 @@ public class ExecutionRootGoalTest {
 
     /**
      * When {@code quiet=true} the property must still be set.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void executeWithQuietStillSetsProperty() throws Exception {
@@ -118,6 +130,9 @@ public class ExecutionRootGoalTest {
 
     /**
      * When {@code systemProperty=true} the system property must be set after execution.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void executeWithSystemPropertySetsSystemProperty() throws Exception {
@@ -139,6 +154,9 @@ public class ExecutionRootGoalTest {
 
     /**
      * When the system property already exists it must not be overridden.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void executeWithSystemPropertyDoesNotOverrideExistingValue() throws Exception {
@@ -161,6 +179,9 @@ public class ExecutionRootGoalTest {
     /**
      * The result of findDirectory is cached in the plugin context so that subsequent calls use the cached value without
      * invoking findDirectory again.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void executeUsesPluginContextCacheOnSubsequentCalls() throws Exception {
@@ -181,6 +202,9 @@ public class ExecutionRootGoalTest {
     /**
      * The mojo can be looked up by goal name via the harness, verifying that the plugin descriptor is correctly
      * generated and accessible on the test classpath.
+     *
+     * @param mojo
+     *            the mojo
      */
     @Test
     @InjectMojo(goal = "execution-root", pom = "src/test/resources/unit/execution-root/pom.xml")
@@ -194,6 +218,20 @@ public class ExecutionRootGoalTest {
 
     /**
      * Creates a fully-wired {@link ExecutionRootGoal} ready for {@code execute()}.
+     *
+     * @param project
+     *            the project
+     * @param quiet
+     *            the quiet
+     * @param systemProperty
+     *            the system property
+     * @param skip
+     *            the skip
+     *
+     * @return the execution root goal
+     *
+     * @throws Exception
+     *             the exception
      */
     private ExecutionRootGoal createConfiguredMojo(TestMavenProject project, boolean quiet, boolean systemProperty,
             boolean skip) throws Exception {
@@ -218,6 +256,8 @@ public class ExecutionRootGoalTest {
      * A {@link MavenProjectStub} with a stable {@link Properties} instance.
      */
     private static class TestMavenProject extends MavenProjectStub {
+
+        /** The properties. */
         private final Properties properties = new Properties();
 
         @Override
@@ -228,6 +268,16 @@ public class ExecutionRootGoalTest {
 
     /**
      * Sets the value of a (possibly non-public) field declared anywhere in the class hierarchy.
+     *
+     * @param target
+     *            the target
+     * @param name
+     *            the name
+     * @param value
+     *            the value
+     *
+     * @throws Exception
+     *             the exception
      */
     static void setField(Object target, String name, Object value) throws Exception {
         Class<?> clazz = target.getClass();
@@ -246,6 +296,16 @@ public class ExecutionRootGoalTest {
 
     /**
      * Gets the value of a (possibly non-public) field declared anywhere in the class hierarchy.
+     *
+     * @param target
+     *            the target
+     * @param name
+     *            the name
+     *
+     * @return the field
+     *
+     * @throws Exception
+     *             the exception
      */
     static Object getField(Object target, String name) throws Exception {
         Class<?> clazz = target.getClass();

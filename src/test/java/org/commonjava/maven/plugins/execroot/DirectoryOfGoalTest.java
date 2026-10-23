@@ -40,9 +40,12 @@ public class DirectoryOfGoalTest {
 
     /**
      * {@link DirectoryOfGoal#getContextKey()} must include the project coordinates.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
-    void getContextKeyContainsProjectCoordinates() throws Exception {
+    void contextKeyContainsProjectCoordinates() throws Exception {
         DirectoryOfGoal mojo = createMojoWithProject("com.example", "my-artifact");
         String key = mojo.getContextKey();
         Assertions.assertTrue(key.startsWith(DirectoryOfGoal.DIR_OF_CONTEXT_KEY),
@@ -53,9 +56,12 @@ public class DirectoryOfGoalTest {
 
     /**
      * {@link DirectoryOfGoal#getLogLabel()} must include the project coordinates.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
-    void getLogLabelContainsProjectCoordinates() throws Exception {
+    void logLabelContainsProjectCoordinates() throws Exception {
         DirectoryOfGoal mojo = createMojoWithProject("com.example", "my-artifact");
         String label = mojo.getLogLabel();
         Assertions.assertTrue(label.contains("com.example"), "Log label must contain groupId");
@@ -64,6 +70,9 @@ public class DirectoryOfGoalTest {
 
     /**
      * {@link DirectoryOfGoal#findDirectory()} must return the basedir of the matched project.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void findDirectoryReturnsBasedirOfMatchedProject() throws Exception {
@@ -84,6 +93,9 @@ public class DirectoryOfGoalTest {
     /**
      * {@link DirectoryOfGoal#findDirectory()} must traverse parent projects when the direct match is not in the reactor
      * list itself but is reachable via parent links.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void findDirectoryFindsProjectViaParentChain() throws Exception {
@@ -107,6 +119,9 @@ public class DirectoryOfGoalTest {
 
     /**
      * {@link DirectoryOfGoal#findDirectory()} must throw when no project matches.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void findDirectoryThrowsWhenProjectNotFound() throws Exception {
@@ -120,6 +135,9 @@ public class DirectoryOfGoalTest {
 
     /**
      * execute() sets the project property to the matched directory when everything is configured.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void executeSetsMavenProjectProperty() throws Exception {
@@ -146,6 +164,16 @@ public class DirectoryOfGoalTest {
 
     /**
      * Creates a {@link DirectoryOfGoal} configured with a target project reference.
+     *
+     * @param groupId
+     *            the group id
+     * @param artifactId
+     *            the artifact id
+     *
+     * @return the directory of goal
+     *
+     * @throws Exception
+     *             the exception
      */
     private DirectoryOfGoal createMojoWithProject(String groupId, String artifactId) throws Exception {
         ProjectRef ref = new ProjectRef();
@@ -171,9 +199,23 @@ public class DirectoryOfGoalTest {
      * A {@link MavenProjectStub} with stable {@link Properties} and configurable basedir.
      */
     static class TestMavenProject extends MavenProjectStub {
+
+        /** The properties. */
         private final Properties properties = new Properties();
+
+        /** The basedir. */
         private final File basedir;
 
+        /**
+         * Instantiates a new test maven project.
+         *
+         * @param groupId
+         *            the group id
+         * @param artifactId
+         *            the artifact id
+         * @param basedir
+         *            the basedir
+         */
         TestMavenProject(String groupId, String artifactId, File basedir) {
             setGroupId(groupId);
             setArtifactId(artifactId);
@@ -193,6 +235,16 @@ public class DirectoryOfGoalTest {
 
     /**
      * Sets the value of a (possibly non-public) field declared anywhere in the class hierarchy.
+     *
+     * @param target
+     *            the target
+     * @param name
+     *            the name
+     * @param value
+     *            the value
+     *
+     * @throws Exception
+     *             the exception
      */
     private static void setField(Object target, String name, Object value) throws Exception {
         Class<?> clazz = target.getClass();

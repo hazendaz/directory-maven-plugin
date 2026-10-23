@@ -49,6 +49,9 @@ public class ProjectRefTest {
 
     /**
      * Validate succeeds when both groupId and artifactId are set.
+     *
+     * @throws MojoExecutionException
+     *             the mojo execution exception
      */
     @Test
     void validateSucceedsWhenBothFieldsAreSet() throws MojoExecutionException {
