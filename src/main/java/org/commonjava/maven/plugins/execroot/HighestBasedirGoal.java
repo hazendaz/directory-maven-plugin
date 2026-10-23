@@ -60,13 +60,13 @@ public class HighestBasedirGoal extends AbstractDirectoryGoal {
     protected File findDirectory() throws MojoExecutionException {
         final Deque<MavenProject> toCheck = new ArrayDeque<>(projects);
         // exclude projects loaded directly from the local repository (super-pom's etc)
-        String localRepoBaseDir = session.getRepositorySession().getLocalRepository().getBasedir().getAbsolutePath();
+        Path localRepoBaseDir = session.getRepositorySession().getLocalRepository().getBasePath();
 
         final List<File> files = new ArrayList<>();
         while (!toCheck.isEmpty()) {
             final MavenProject mavenProject = toCheck.pop();
             if (mavenProject.getBasedir() == null
-                    || mavenProject.getBasedir().toString().startsWith(localRepoBaseDir)) {
+                    || mavenProject.getBasedir().toString().startsWith(localRepoBaseDir.toString())) {
                 // we've hit a parent that was resolved. Don't bother going higher up the hierarchy.
                 continue;
             }
