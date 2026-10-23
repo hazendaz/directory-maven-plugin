@@ -203,7 +203,7 @@ public class HighestBasedirGoalTest {
         setField(mojo, "currentProject", currentProject);
 
         // Mock the MavenSession → RepositorySystemSession → LocalRepository chain
-        LocalRepository localRepository = new LocalRepository(localRepoDir);
+        LocalRepository localRepository = new LocalRepository(localRepoDir.toPath());
         RepositorySystemSession repositorySession = mock(RepositorySystemSession.class);
         when(repositorySession.getLocalRepository()).thenReturn(localRepository);
         MavenSession session = mock(MavenSession.class);
