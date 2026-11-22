@@ -90,7 +90,7 @@
         <project.build.outputTimestamp>1782251733</project.build.outputTimestamp>
 
         <!-- Maven Artifacts -->
-        <maven.version>3.10.1</maven.version>
+        <maven.version>3.10.2</maven.version>
         <maven-plugin.version>3.16.0</maven-plugin.version>
         <testing-harness.version>3.5.1</testing-harness.version>
 
